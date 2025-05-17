@@ -1,0 +1,102 @@
+{% extends 'rental/base.html' %} {% load static %}
+
+<!-- title -->
+{% block title %}Book {{ car.year }} {{ car.make }} {{ car.model }} - Car Rental
+Service{% endblock %}
+
+<!-- css -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'rental/css/login-style.css' %}" /><link
+  rel="stylesheet"
+  href="{% static 'rental/css/book-car.css' %}"
+/>{% endblock %} {% block content %}
+<div class="booking-container login-container">
+  <div class="car-summary">
+    <img src="{{ car.image.url }}" alt="{{ car.make }} {{ car.model }}" />
+    <div class="car-info">
+      <h3>{{ car.year }} {{ car.make }} {{ car.model }}</h3>
+      <span class="car-price">${{ car.daily_rate }}/day</span>
+    </div>
+  </div>
+
+  <form method="post" class="login-form booking-form">
+    {% csrf_token %}
+    <h2>Book This Car</h2>
+
+    {% if form.non_field_errors %}
+    <div class="error-box show">
+      {% for error in form.non_field_errors %} {{ error }} {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="form-group {% if form.pickup_date.errors %}error{% endif %}">
+      <label for="{{ form.pickup_date.id_for_label }}">Pickup Date</label>
+      {{ form.pickup_date }} 
+      {% if form.pickup_date.errors %}
+      <span class="error-message">{{ form.pickup_date.errors.0 }}</span>
+      {% endif %}
+    </div>
+
+    <div class="form-group {% if form.pickup_time.errors %}error{% endif %}">
+      <label for="{{ form.pickup_time.id_for_label }}">Pickup Time</label>
+      <select name="{{ form.pickup_time.name }}" id="{{ form.pickup_time.id_for_label }}" class="form-control">
+        {% for value, text in form.fields.pickup_time.choices %}
+        <option value="{{ value }}" {% if form.pickup_time.value == value %}selected{% endif %}>
+          {{ text }}
+        </option>
+        {% endfor %}
+      </select>
+      {% if form.pickup_time.errors %}
+      <span class="error-message">{{ form.pickup_time.errors.0 }}</span>
+      {% endif %}
+    </div>
+
+    <div class="form-group {% if form.rental_duration.errors %}error{% endif %}">
+      <label for="{{ form.rental_duration.id_for_label }}">Rental Duration</label>
+      <select name="{{ form.rental_duration.name }}" id="{{ form.rental_duration.id_for_label }}" class="form-control">
+        {% for value, text in form.fields.rental_duration.choices %}
+        <option value="{{ value }}" {% if form.rental_duration.value == value %}selected{% endif %}>
+          {{ text }}
+        </option>
+        {% endfor %}
+      </select>
+      {% if form.rental_duration.errors %}
+      <span class="error-message">{{ form.rental_duration.errors.0 }}</span>
+      {% endif %}
+    </div>
+
+    <div class="pricing-estimate">
+      <p>Daily Rate: ${{ car.daily_rate }}</p>
+      <p>Final price will be calculated based on your selected duration.</p>
+    </div>
+
+    <button type="submit">Book Now</button>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const dailyRate = parseFloat("{{ car.daily_rate }}");
+    const durationSelect = document.getElementById('{{ form.rental_duration.id_for_label }}');
+    const pricingEstimate = document.querySelector('.pricing-estimate');
+
+    function updatePriceEstimate() {
+      const duration = parseInt(durationSelect.value);
+      const totalPrice = (dailyRate * duration).toFixed(2);
+      
+      pricingEstimate.innerHTML = '<p>Daily Rate: $' + dailyRate + '</p>' +
+        '<p>Duration: ' + duration + ' day' + (duration > 1 ? 's' : '') + '</p>' +
+        '<p class="total-price">Estimated Total: $' + totalPrice + '</p>';
+    }
+
+    // Update price on page load
+    updatePriceEstimate();
+
+    // Update price when duration changes
+    durationSelect.addEventListener('change', updatePriceEstimate);
+  });
+</script>
+{% endblock %}
+ 

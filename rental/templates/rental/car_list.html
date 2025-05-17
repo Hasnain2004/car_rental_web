@@ -1,0 +1,185 @@
+{% extends 'rental/base.html' %} {% load static %}
+
+<!-- title -->
+{% block title %}Car Rental Service - Our Fleet{% endblock %}
+
+<!-- css -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'rental/css/car-list.css' %}" />
+{% endblock %}
+
+<!-- content -->
+{% block content %}
+<!-- Cars Section -->
+<section id="cars" class="portfolio-section">
+  <div class="container">
+    <div class="portfolio-header">
+      <h2 class="section-title">Our Fleet</h2>
+
+      <!-- Search Form -->
+      <div class="search-container">
+        <form method="GET" action="{% url 'car_list' %}" class="search-form">
+          <div class="search-input">
+            <input
+              type="text"
+              name="q"
+              placeholder="Search cars..."
+              value="{{ search_query }}"
+            />
+            <button type="submit"><i class="fas fa-search"></i></button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="portfolio-filters">
+        <a
+          href="{% url 'car_list' %}?category=all{% if search_query %}&q={{ search_query }}{% endif %}"
+          class="filter-category {% if selected_category == 'all' %}active{% endif %}"
+          >All Cars</a
+        >
+        {% for category_id, category_name in categories %}
+        <a
+          href="{% url 'car_list' %}?category={{ category_id }}{% if search_query %}&q={{ search_query }}{% endif %}"
+          class="filter-category {% if selected_category == category_id %}active{% endif %}"
+          >{{ category_name }}</a
+        >
+        {% endfor %}
+      </div>
+
+      <!-- Additional filters could be added here in the future -->
+      <!-- Example: 
+      <div class="car-subfilters">
+        <button class="sub-filter-btn active">All</button>
+        <button class="sub-filter-btn">Top Rated</button>
+        <button class="sub-filter-btn">New Arrivals</button>
+        <button class="sub-filter-btn">Best Value</button>
+      </div>
+      -->
+    </div>
+
+    {% if category_cars %}
+    <!-- Category View - Show all categories -->
+    {% for category_id, category_data in category_cars.items %}
+    <!-- a -->
+    {% if category_data.cars %}
+    <div class="category-section" id="{{ category_id }}">
+      <h3 class="category-title">{{ category_data.name }}</h3>
+
+      <div class="portfolio-grid cars-grid">
+        {% for car in category_data.cars %}
+        <div class="portfolio-item car-item">
+          <a href="{% url 'car_detail' car.id %}" class="portfolio-link">
+            <div class="portfolio-image">
+              <img
+                src="{{ car.image.url }}"
+                alt="{{ car.make }} {{ car.model }}"
+              />
+              <div class="portfolio-overlay">
+                <span class="category">{{ car.make }}</span>
+                <h3>{{ car.year }} {{ car.model }}</h3>
+                <div class="car-meta">
+                  <span class="car-price">${{ car.daily_rate }}/day</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% if category_data.cars|length >= 6 %}
+      <div class="view-more-link">
+        <a
+          href="{% url 'car_list' %}?category={{ category_id }}"
+          class="btn-view-more"
+          >View All {{ category_data.name }} Cars</a
+        >
+      </div>
+      {% endif %}
+    </div>
+    {% endif %} {% endfor %} {% else %}
+    <!-- Single Category View - Show filtered cars with pagination -->
+    <div class="portfolio-grid cars-grid">
+      {% for car in page_obj %}
+      <div class="portfolio-item car-item">
+        <a href="{% url 'car_detail' car.id %}" class="portfolio-link">
+          <div class="portfolio-image">
+            <img
+              src="{{ car.image.url }}"
+              alt="{{ car.make }} {{ car.model }}"
+            />
+            <div class="portfolio-overlay">
+              <span class="category">{{ car.make }}</span>
+              <h3>{{ car.year }} {{ car.model }}</h3>
+              <div class="car-meta">
+                <span class="car-price">${{ car.daily_rate }}/day</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% empty %}
+      <div class="no-results">
+        <p>No cars found matching your search criteria.</p>
+        <a href="{% url 'car_list' %}" class="btn-reset">Reset Filters</a>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="pagination">
+      {% if page_obj.has_previous %}
+      <a
+        href="?category={{ selected_category }}&page=1{% if search_query %}&q={{ search_query }}{% endif %}"
+        class="page-link"
+        >&laquo; First</a
+      >
+      <a
+        href="?category={{ selected_category }}&page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}"
+        class="page-link"
+        >&lsaquo; Previous</a
+      >
+      {% endif %} {% for num in page_obj.paginator.page_range %}
+      <!-- a -->
+      {% if page_obj.number == num %}
+      <span class="page-link active">{{ num }}</span>
+      {% elif num > page_obj.number|add:'-3'
+      <!-- a -->
+      and num < page_obj.number|add:'3'%}
+      <a
+        href="?category={{ selected_category }}&page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}"
+        class="page-link"
+        >{{ num }}</a
+      >
+      {% endif %} {% endfor %} {% if page_obj.has_next %}
+      <a
+        href="?category={{ selected_category }}&page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}"
+        class="page-link"
+        >Next &rsaquo;</a
+      >
+      <a
+        href="?category={{ selected_category }}&page={{ page_obj.paginator.num_pages }}{% if search_query %}&q={{ search_query }}{% endif %}"
+        class="page-link"
+        >Last &raquo;</a
+      >
+      {% endif %}
+    </div>
+    {% endif %} {% endif %}
+  </div>
+</section>
+
+<!-- Car Booking CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2>Ready to Rent Your Perfect Car?</h2>
+      <p>Browse our selection and find the ideal vehicle for your needs.</p>
+      <a href="#cars" class="cta-button">View All Cars</a>
+    </div>
+  </div>
+</section>
+{% endblock %} {% block extra_js %}
+<script src="{% static 'rental/js/car-list.js' %}"></script>
+{% endblock %}

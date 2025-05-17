@@ -1,0 +1,139 @@
+{% extends 'rental/base.html' %} {% load static %}
+
+<!-- title -->
+{% block title %}Edit Profile - Car Rental Service{% endblock %}
+
+<!-- css -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'rental/css/login-style.css' %}" /><link
+  rel="stylesheet"
+  href="{% static 'rental/css/edit-profile.css' %}"
+/>{% endblock %} {% block content %}
+<div class="login-container">
+  <form method="post" class="login-form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h2>Edit Profile</h2>
+
+    {% if messages %}
+    <div class="error-box success">
+      {% for message in messages %} {{ message }} {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Profile Picture Preview -->
+    <div class="profile-pic-preview">
+      {% if user.profile.profile_picture %}
+      <img
+        src="{{ user.profile.profile_picture.url }}"
+        alt="{{ user.username }}"
+        id="profile-pic-preview"
+      />
+      {% else %}
+      <i class="fas fa-user" id="profile-pic-icon"></i>
+      <img
+        src=""
+        alt="{{ user.username }}"
+        id="profile-pic-preview"
+        style="display: none"
+      />
+      {% endif %}
+    </div>
+
+    <!-- Profile Picture Upload -->
+    <div class="form-group">
+      <label for="{{ p_form.profile_picture.id_for_label }}"
+        >Profile Picture</label
+      >
+      {{ p_form.profile_picture }}
+    </div>
+
+    <h3>Account Information</h3>
+
+    <!-- Username and Email -->
+    <div class="form-row">
+      <div class="form-group {% if u_form.username.errors %}error{% endif %}">
+        <label for="{{ u_form.username.id_for_label }}">Username</label>
+        {{ u_form.username }} {% if u_form.username.errors %}
+        <span class="error-message">{{ u_form.username.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <div class="form-group {% if u_form.email.errors %}error{% endif %}">
+        <label for="{{ u_form.email.id_for_label }}">Email</label>
+        {{ u_form.email }} {% if u_form.email.errors %}
+        <span class="error-message">{{ u_form.email.errors.0 }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- First and Last Name -->
+    <div class="form-row">
+      <div class="form-group {% if u_form.first_name.errors %}error{% endif %}">
+        <label for="{{ u_form.first_name.id_for_label }}">First Name</label>
+        {{ u_form.first_name }} {% if u_form.first_name.errors %}
+        <span class="error-message">{{ u_form.first_name.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <div class="form-group {% if u_form.last_name.errors %}error{% endif %}">
+        <label for="{{ u_form.last_name.id_for_label }}">Last Name</label>
+        {{ u_form.last_name }} {% if u_form.last_name.errors %}
+        <span class="error-message">{{ u_form.last_name.errors.0 }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <h3>Personal Information</h3>
+
+    <!-- Phone and Date of Birth -->
+    <div class="form-row">
+      <div
+        class="form-group {% if p_form.phone_number.errors %}error{% endif %}"
+      >
+        <label for="{{ p_form.phone_number.id_for_label }}">Phone Number</label>
+        {{ p_form.phone_number }} {% if p_form.phone_number.errors %}
+        <span class="error-message">{{ p_form.phone_number.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <div
+        class="form-group {% if p_form.date_of_birth.errors %}error{% endif %}"
+      >
+        <label for="{{ p_form.date_of_birth.id_for_label }}"
+          >Date of Birth</label
+        >
+        {{ p_form.date_of_birth }} {% if p_form.date_of_birth.errors %}
+        <span class="error-message">{{ p_form.date_of_birth.errors.0 }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Address -->
+    <div class="form-group {% if p_form.address.errors %}error{% endif %}">
+      <label for="{{ p_form.address.id_for_label }}">Address</label>
+      {{ p_form.address }} {% if p_form.address.errors %}
+      <span class="error-message">{{ p_form.address.errors.0 }}</span>
+      {% endif %}
+    </div>
+
+    <!-- Driver License -->
+    <div
+      class="form-group {% if p_form.driver_license.errors %}error{% endif %}"
+    >
+      <label for="{{ p_form.driver_license.id_for_label }}"
+        >Driver License</label
+      >
+      {{ p_form.driver_license }} {% if p_form.driver_license.errors %}
+      <span class="error-message">{{ p_form.driver_license.errors.0 }}</span>
+      {% endif %}
+    </div>
+
+    <div class="form-actions">
+      <a href="{% url 'profile' %}" class="btn-cancel">Cancel</a>
+      <button type="submit">Save Changes</button>
+    </div>
+  </form>
+</div>
+{% endblock %} {% block extra_js %}
+<script src="{% static 'rental/js/edit-profile.js' %}"></script>
+{% endblock %}

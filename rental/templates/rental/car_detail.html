@@ -1,0 +1,157 @@
+{% extends 'rental/base.html' %} {% load static %}
+
+<!-- title -->
+{% block title %}{{ car.year }} {{ car.make }} {{ car.model }} - Car Rental
+Service{% endblock %}
+
+<!-- css -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'rental/css/car-detail.css' %}" />
+{% endblock %}
+
+<!-- content -->
+{% block content %}
+<!-- Car Detail Section -->
+<section class="car-detail-section">
+  <div class="container">
+    <div class="car-detail-grid">
+      <!-- Car Gallery -->
+      <div class="car-gallery">
+        <div class="main-image">
+          <img
+            src="{{ car.image.url }}"
+            alt="{{ car.make }} {{ car.model }}"
+            id="mainCarImage"
+          />
+        </div>
+
+        <div class="thumbnail-grid">
+          <!-- Main/primary image as first thumbnail -->
+          <div class="thumbnail active" data-image-url="{{ car.image.url }}">
+            <img
+              src="{{ car.image.url }}"
+              alt="{{ car.make }} {{ car.model }} - Main Image"
+            />
+          </div>
+
+          <!-- Additional car images -->
+          {% for car_image in car_images %}
+          <div class="thumbnail" data-image-url="{{ car_image.image.url }}">
+            <img
+              src="{{ car_image.image.url }}"
+              alt="{{ car.make }} {{ car.model }} - {{ car_image.caption|default:'Image' }}"
+            />
+          </div>
+          {% empty %} {% if car_images|length == 0 %}
+          <div class="no-additional-images">No additional images available</div>
+          {% endif %} {% endfor %}
+        </div>
+      </div>
+
+      <!-- Car Details -->
+      <div class="car-details">
+        <h1 class="car-title">{{ car.year }} {{ car.make }} {{ car.model }}</h1>
+        <span class="car-price"
+          >${{ car.daily_rate }} <span>per day</span></span
+        >
+
+        <div class="car-description">{{ car.description }}</div>
+
+        <div class="car-features">
+          <h3 class="feature-title">Car Specifications</h3>
+          <div class="features-grid">
+            <div class="feature-item">
+              <i class="fas fa-palette"></i>
+              <span>Color: {{ car.color }}</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-tachometer-alt"></i>
+              <span>Mileage: {{ car.mileage }} miles</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-car"></i>
+              <span>License: {{ car.license_plate }}</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-check-circle"></i>
+              <span
+                >Status: {% if car.is_available %}Available
+                <!-- a -->
+                {% else %}Unavailable{% endif %}</span
+              >
+            </div>
+          </div>
+        </div>
+
+        {% if car.is_available %} {% if user.is_authenticated %}
+        <a href="{% url 'book_car' car.id %}" class="booking-btn">Book Now</a>
+        {% else %}
+        <a
+          href="{% url 'login' %}?next={% url 'book_car' car.id %}"
+          class="booking-btn"
+          >Login to Book</a
+        >
+        {% endif %} {% else %}
+        <button
+          disabled
+          class="booking-btn"
+          style="background-color: #ccc; cursor: not-allowed"
+        >
+          Currently Unavailable
+        </button>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Related Cars -->
+    {% if related_cars %}
+    <div class="related-cars">
+      <h2 class="related-title">Similar Cars You Might Like</h2>
+      <div class="related-grid">
+        {% for related_car in related_cars %}
+        <div class="related-item">
+          <a href="{% url 'car_detail' related_car.id %}">
+            <div class="related-image">
+              <img
+                src="{{ related_car.image.url }}"
+                alt="{{ related_car.make }} {{ related_car.model }}"
+              />
+              <div class="related-overlay">
+                <span class="category">{{ related_car.make }}</span>
+                <h3>{{ related_car.year }} {{ related_car.model }}</h3>
+                <span class="related-price"
+                  >${{ related_car.daily_rate }}/day</span
+                >
+              </div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %} {% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const thumbnails = document.querySelectorAll(".thumbnail");
+    const mainImage = document.getElementById("mainCarImage");
+
+    // Add click handler to thumbnails
+    thumbnails.forEach((thumbnail) => {
+      thumbnail.addEventListener("click", function () {
+        // Remove active class from all thumbnails
+        thumbnails.forEach((t) => t.classList.remove("active"));
+
+        // Add active class to clicked thumbnail
+        this.classList.add("active");
+
+        // Update main image source
+        const imageUrl = this.getAttribute("data-image-url");
+        mainImage.src = imageUrl;
+      });
+    });
+  });
+</script>
+{% endblock %}

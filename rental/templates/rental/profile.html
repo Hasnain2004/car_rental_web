@@ -1,0 +1,124 @@
+{% extends 'rental/base.html' %} {% load static %}
+
+<!-- title -->
+{% block title %}My Profile - Car Rental Service{% endblock %}
+
+<!-- css -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'rental/css/profile.css' %}" />
+{% endblock %} {% block content %}
+<section class="profile-section">
+  <div class="container profile-container">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        {% if user.profile.profile_picture %}
+        <img
+          src="{{ user.profile.profile_picture.url }}"
+          alt="{{ user.username }}"
+        />
+        {% else %}
+        <i class="fas fa-user"></i>
+        {% endif %}
+      </div>
+      <div class="profile-info">
+        <h1>
+          {{ user.first_name }} {{ user.last_name|default:user.username }}
+        </h1>
+        <div class="profile-meta">
+          <span>{{ user.email }}</span>
+        </div>
+        <div class="profile-actions">
+          <a href="{% url 'edit_profile' %}" class="btn-edit-profile"
+            >Edit Profile</a
+          >
+          <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Details -->
+    <div class="profile-details">
+      <h2>Personal Information</h2>
+
+      <div class="detail-group">
+        <div class="detail-label">Username</div>
+        <div class="detail-value">{{ user.username }}</div>
+      </div>
+
+      <div class="detail-group">
+        <div class="detail-label">Email</div>
+        <div class="detail-value">{{ user.email }}</div>
+      </div>
+
+      <div class="detail-group">
+        <div class="detail-label">Phone Number</div>
+        <div class="detail-value">
+          {{ user.profile.phone_number|default:"Not provided" }}
+        </div>
+      </div>
+
+      <div class="detail-group">
+        <div class="detail-label">Address</div>
+        <div class="detail-value">
+          {{ user.profile.address|default:"Not provided" }}
+        </div>
+      </div>
+
+      <div class="detail-group">
+        <div class="detail-label">Driver License</div>
+        <div class="detail-value">
+          {{ user.profile.driver_license|default:"Not provided" }}
+        </div>
+      </div>
+
+      <div class="detail-group">
+        <div class="detail-label">Date of Birth</div>
+        <div class="detail-value">
+          {{ user.profile.date_of_birth|date:"F j, Y"|default:"Not provided" }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Bookings -->
+    <h2>Recent Bookings</h2>
+    <div class="booking-list">
+      {% for booking in bookings|slice:":3" %}
+      <div class="booking-item">
+        <div class="booking-image">
+          <img
+            src="{{ booking.car.image.url }}"
+            alt="{{ booking.car.make }} {{ booking.car.model }}"
+          />
+        </div>
+        <div class="booking-details">
+          <h3>
+            {{ booking.car.year }} {{ booking.car.make }}
+            <!-- a -->
+            {{ booking.car.model }}
+          </h3>
+          <div class="booking-meta">
+            <span
+              >{{ booking.start_date|date:"M d, Y" }} -
+              <!-- a -->
+              {{ booking.end_date|date:"M d, Y" }}</span
+            >
+            <span>${{ booking.total_cost }}</span>
+          </div>
+        </div>
+        <div class="booking-status status-{{ booking.status }}">
+          {{ booking.get_status_display }}
+        </div>
+      </div>
+      {% empty %}
+      <p>You don't have any bookings yet.</p>
+      {% endfor %} {% if bookings.count > 3 %}
+      <div class="view-all-bookings">
+        <a href="{% url 'booking_list' %}" class="btn-view-all"
+          >View All Bookings</a
+        >
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

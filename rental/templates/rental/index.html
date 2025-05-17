@@ -1,0 +1,255 @@
+{% extends 'rental/base.html' %} {% load static %}
+
+<!-- title -->
+{% block title %}Car Rental Service - Home{% endblock %}
+
+<!-- css -->
+{% block extra_css %}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+<link rel="stylesheet" href="{% static 'rental/css/home.css' %}" />
+{% endblock %} {% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+  <!-- Main Slider -->
+  <div class="swiper mainSwiper">
+    <div class="swiper-wrapper">
+      <!-- Slide 1 -->
+      <div class="swiper-slide">
+        <div class="slide-inner">
+          <div class="slide-content">
+            <span class="subtitle">Premium Experience</span>
+            <h1>Luxury Car<br />Rentals</h1>
+            <div class="slide-info">
+              <div class="category">Premium</div>
+              <div class="year">2024</div>
+            </div>
+          </div>
+          <div class="slide-image">
+            <img
+              src="{% static 'rental/assets/slide-1.jpg' %}"
+              alt="Luxury Cars"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="swiper-slide">
+        <div class="slide-inner">
+          <div class="slide-content">
+            <span class="subtitle">Economic Options</span>
+            <h1>Budget<br />Friendly</h1>
+            <div class="slide-info">
+              <div class="category">Economy</div>
+              <div class="year">2024</div>
+            </div>
+          </div>
+          <div class="slide-image">
+            <img
+              src="{% static 'rental/assets/slide-2.jpg' %}"
+              alt="Economy Cars"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="swiper-slide">
+        <div class="slide-inner">
+          <div class="slide-content">
+            <span class="subtitle">Electric Options</span>
+            <h1>Eco-Friendly<br />Vehicles</h1>
+            <div class="slide-info">
+              <div class="category">Electric</div>
+              <div class="year">2024</div>
+            </div>
+          </div>
+          <div class="slide-image">
+            <img
+              src="{% static 'rental/assets/slide-3.jpg' %}"
+              alt="Electric Cars"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="slider-navigation">
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+
+  <!-- Thumbnail Gallery -->
+  <div class="thumbnail-gallery">
+    <div class="swiper thumbSwiper">
+      <div class="swiper-wrapper">
+        <!-- Thumb 1 -->
+        <div class="swiper-slide">
+          <div class="thumb-item">
+            <div class="thumb-content">
+              <span class="thumb-number">01</span>
+              <h3>Luxury</h3>
+              <p>Premium</p>
+            </div>
+            <img
+              src="{% static 'rental/assets/slide-1.jpg' %}"
+              alt="Luxury Cars"
+            />
+          </div>
+        </div>
+
+        <!-- Thumb 2 -->
+        <div class="swiper-slide">
+          <div class="thumb-item">
+            <div class="thumb-content">
+              <span class="thumb-number">02</span>
+              <h3>Economy</h3>
+              <p>Budget</p>
+            </div>
+            <img
+              src="{% static 'rental/assets/slide-2.jpg' %}"
+              alt="Economy Cars"
+            />
+          </div>
+        </div>
+
+        <!-- Thumb 3 -->
+        <div class="swiper-slide">
+          <div class="thumb-item">
+            <div class="thumb-content">
+              <span class="thumb-number">03</span>
+              <h3>Electric</h3>
+              <p>Eco-Friendly</p>
+            </div>
+            <img
+              src="{% static 'rental/assets/slide-3.jpg' %}"
+              alt="Electric Cars"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Cars Section -->
+<section class="featured-cars-section">
+  <div class="container">
+    <h2 class="section-title">Our Fleet</h2>
+
+    {% if featured_cars %}
+    <div class="cars-grid">
+      {% for car in featured_cars %}
+      <div class="car-card">
+        <div class="car-image">
+          <img src="{{ car.image.url }}" alt="{{ car.make }} {{ car.model }}" />
+          <div class="car-tag">{{ car.get_category_display }}</div>
+        </div>
+        <div class="car-details">
+          <h3>{{ car.year }} {{ car.make }} {{ car.model }}</h3>
+          <div class="car-meta">
+            <span class="car-price">${{ car.daily_rate }}/day</span>
+            <span
+              class="car-status {% if car.is_available %}available{% else %}unavailable{% endif %}"
+            >
+              {% if car.is_available %}Available{% else %}Unavailable{% endif %}
+            </span>
+          </div>
+          <p class="car-description">{{ car.description|truncatechars:100 }}</p>
+          <a href="{% url 'car_detail' car.id %}" class="btn-view-details"
+            >View Details</a
+          >
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-cars-message">
+      <p>No cars available at the moment. Please check back later.</p>
+    </div>
+    {% endif %}
+
+    <div class="view-all-link">
+      <a href="{% url 'car_list' %}" class="btn-view-all">View All Cars</a>
+    </div>
+  </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="why-choose-section">
+  <div class="container">
+    <h2 class="section-title">Why Choose Us</h2>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-car"></i>
+        </div>
+        <h3>Wide Selection</h3>
+        <p>From economy to luxury, we have the perfect car for your needs.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-money-bill-wave"></i>
+        </div>
+        <h3>Best Rates</h3>
+        <p>Competitive prices with no hidden fees or charges.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-headset"></i>
+        </div>
+        <h3>24/7 Support</h3>
+        <p>Our customer service team is always available to assist you.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <h3>Insurance Included</h3>
+        <p>Peace of mind with comprehensive insurance coverage.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %} {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Initialize main swiper
+    var mainSwiper = new Swiper(".mainSwiper", {
+      loop: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+    });
+
+    // Initialize thumb swiper
+    var thumbSwiper = new Swiper(".thumbSwiper", {
+      slidesPerView: 3,
+      spaceBetween: 10,
+      watchSlidesProgress: true,
+    });
+
+    // Link the two swipers
+    mainSwiper.controller.control = thumbSwiper;
+    thumbSwiper.controller.control = mainSwiper;
+
+    // Click on thumb to navigate
+    const thumbItems = document.querySelectorAll(".thumb-item");
+    thumbItems.forEach((item, index) => {
+      item.addEventListener("click", () => {
+        mainSwiper.slideTo(index + 1);
+      });
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'rental/base.html' %} {% load static %}
+
+<!-- title -->
+{% block title %}Login - Car Rental Service{% endblock %}
+
+<!-- css -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'rental/css/login-style.css' %}" />
+{% endblock %}
+
+<!-- content -->
+{% block content %}
+<div class="login-container">
+  <form method="post" class="login-form">
+    {% csrf_token %}
+    <h2>Login to Your Account</h2>
+
+    {% if messages %}
+    <div class="error-box show">
+      {% for message in messages %} {{ message }} {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required />
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
+    </div>
+
+    <div class="form-options">
+      <div class="remember-me">
+        <input type="checkbox" id="remember" name="remember" />
+        <label for="remember">Remember me</label>
+      </div>
+      <a href="#" class="forgot-password">Forgot Password?</a>
+    </div>
+
+    <button type="submit">Login</button>
+
+    <div class="register-link">
+      <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+    </div>
+  </form>
+</div>
+{% endblock %}
