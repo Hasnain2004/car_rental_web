@@ -1,65 +1,53 @@
-{% extends 'rental/base.html' %} {% load static %}
-
+{% extends 'rental/base.html' %}
+{% load static %}
 <!-- title -->
 {% block title %}Register - Car Rental Service{% endblock %}
-
 <!-- css -->
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'rental/css/login-style.css' %}" />
-<link rel="stylesheet" href="{% static 'rental/css/register.css' %}" />
-{% endblock %} {% block content %}
-<div class="login-container">
-  <form method="post" class="login-form">
-    {% csrf_token %}
-    <h2>Create an Account</h2>
-
-    {% if form.errors %}
-    <div class="error-box show">Please correct the errors below.</div>
-    {% endif %}
-
-    <div class="form-group {% if form.username.errors %}error{% endif %}">
-      <label for="{{ form.username.id_for_label }}">Username</label>
-      {{ form.username }} {% if form.username.errors %}
-      <div class="error-list">{{ form.username.errors }}</div>
-      {% endif %}
-    </div>
-
-    <div class="form-group {% if form.email.errors %}error{% endif %}">
-      <label for="{{ form.email.id_for_label }}">Email</label>
-      {{ form.email }} {% if form.email.errors %}
-      <div class="error-list">{{ form.email.errors }}</div>
-      {% endif %}
-    </div>
-
-    <div class="form-row">
-      <div class="form-group {% if form.password1.errors %}error{% endif %}">
-        <label for="{{ form.password1.id_for_label }}">Password</label>
-        {{ form.password1 }} {% if form.password1.errors %}
-        <div class="error-list">{{ form.password1.errors }}</div>
-        {% endif %}
+  <link rel="stylesheet" href="{% static 'rental/css/login-style.css' %}" />
+  <link rel="stylesheet" href="{% static 'rental/css/register.css' %}" />
+{% endblock %}
+{% block content %}
+  <div class="login-container">
+    <form method="post" class="login-form">
+      {% csrf_token %}
+      <h2>Create an Account</h2>
+      {% if form.errors %}<div class="error-box show">Please correct the errors below.</div>{% endif %}
+      <div class="form-group {% if form.username.errors %}error{% endif %}">
+        <label for="{{ form.username.id_for_label }}">Username</label>
+        {{ form.username }}
+        {% if form.username.errors %}<div class="error-list">{{ form.username.errors }}</div>{% endif %}
       </div>
-
-      <div class="form-group {% if form.password2.errors %}error{% endif %}">
-        <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
-        {{ form.password2 }} {% if form.password2.errors %}
-        <div class="error-list">{{ form.password2.errors }}</div>
-        {% endif %}
+      <div class="form-group {% if form.email.errors %}error{% endif %}">
+        <label for="{{ form.email.id_for_label }}">Email</label>
+        {{ form.email }}
+        {% if form.email.errors %}<div class="error-list">{{ form.email.errors }}</div>{% endif %}
       </div>
-    </div>
-
-    <div class="terms-checkbox">
-      <input type="checkbox" id="terms" name="terms" required />
-      <label for="terms"
-        >I agree to the <a href="#">Terms of Service</a> and
-        <a href="#">Privacy Policy</a></label
-      >
-    </div>
-
-    <button type="submit">Register</button>
-
-    <div class="register-link">
-      <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
-    </div>
-  </form>
-</div>
+      <div class="form-row">
+        <div class="form-group {% if form.password1.errors %}error{% endif %}">
+          <label for="{{ form.password1.id_for_label }}">Password</label>
+          {{ form.password1 }}
+          {% if form.password1.errors %}<div class="error-list">{{ form.password1.errors }}</div>{% endif %}
+        </div>
+        <div class="form-group {% if form.password2.errors %}error{% endif %}">
+          <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+          {{ form.password2 }}
+          {% if form.password2.errors %}<div class="error-list">{{ form.password2.errors }}</div>{% endif %}
+        </div>
+      </div>
+      <div class="terms-checkbox">
+        <input type="checkbox" id="terms" name="terms" required />
+        <label for="terms">
+          I agree to the <a href="#">Terms of Service</a> and
+          <a href="#">Privacy Policy</a>
+        </label>
+      </div>
+      <button type="submit">Register</button>
+      <div class="register-link">
+        <p>
+          Already have an account? <a href="{% url 'login' %}">Login</a>
+        </p>
+      </div>
+    </form>
+  </div>
 {% endblock %}
