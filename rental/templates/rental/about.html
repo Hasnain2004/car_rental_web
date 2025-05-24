@@ -1,155 +1,157 @@
-{% extends 'rental/base.html' %} {% load static %}
+{% extends 'rental/base.html' %}
+{% load static %}
 <!-- title -->
 {% block title %}Car Rental Service - About Us{% endblock %}
 <!-- css -->
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'rental/css/about-style.css' %}" />
-{% endblock %} {% block content %}
-<!-- About Section -->
-<section id="about" class="about-section">
-  <div class="container">
-    <div class="about-grid">
-      <div class="about-image">
-        <div class="image-wrapper">
-          <img
-            src="{% static 'rental/assets/about-image.jpg' %}"
-            alt="Car Rental Service"
-          />
+  <link rel="stylesheet" href="{% static 'rental/css/about-style.css' %}" />
+{% endblock %}
+{% block content %}
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image">
+          <div class="image-wrapper">
+            <img src="{% static 'rental/assets/about-image.jpg' %}"
+                 alt="Car Rental Service"
+                 width="600"
+                 height="400" />
+          </div>
+          <div class="experience-badge">
+            <span class="years">10+</span>
+            <span class="text">Years
+              <br />
+            Experience</span>
+          </div>
         </div>
-        <div class="experience-badge">
-          <span class="years">10+</span>
-          <span class="text">Years<br />Experience</span>
+        <div class="about-content">
+          <div class="section-tag">About us</div>
+          <h2 class="section-title">Your Trusted Car Rental Partner</h2>
+          <p class="about-text">
+            Welcome to Car Rental Service, where quality meets affordability. With
+            over 10 years of experience in the industry, we've built a reputation
+            for providing exceptional car rental services to our customers.
+          </p>
+          <p class="about-text">
+            Our fleet consists of well-maintained vehicles ranging from economy to
+            luxury, ensuring we have the perfect car for every need and budget.
+            Whether you're planning a family vacation, a business trip, or just
+            need a temporary vehicle, we've got you covered.
+          </p>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-number">100+</span>
+              <span class="stat-label">Vehicles</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">10k+</span>
+              <span class="stat-label">Happy Clients</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">24/7</span>
+              <span class="stat-label">Support</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="about-content">
-        <div class="section-tag">About us</div>
-        <h2 class="section-title">Your Trusted Car Rental Partner</h2>
-        <p class="about-text">
-          Welcome to Car Rental Service, where quality meets affordability. With
-          over 10 years of experience in the industry, we've built a reputation
-          for providing exceptional car rental services to our customers.
+    </div>
+  </section>
+  <!-- Our Team Section -->
+  <section class="team-section">
+    <div class="container">
+      <h2 class="section-title">Our Team</h2>
+      <div class="team-grid">
+        <div class="team-member">
+          <div class="member-image">
+            <img src="{% static 'rental/assets/team-1.jpg' %}"
+                 alt="Team Member"
+                 width="300"
+                 height="300" />
+          </div>
+          <div class="member-info">
+            <h3>John Doe</h3>
+            <span class="member-position">CEO & Founder</span>
+            <p>
+              With 15+ years in the car rental industry, John leads our team with
+              passion and vision.
+            </p>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="member-image">
+            <img src="{% static 'rental/assets/team-2.jpg' %}"
+                 alt="Team Member"
+                 width="300"
+                 height="300" />
+          </div>
+          <div class="member-info">
+            <h3>Jane Smith</h3>
+            <span class="member-position">Operations Manager</span>
+            <p>
+              Jane ensures our day-to-day operations run smoothly and our
+              customers receive top-notch service.
+            </p>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="member-image">
+            <img src="{% static 'rental/assets/team-3.jpg' %}"
+                 alt="Team Member"
+                 width="300"
+                 height="300" />
+          </div>
+          <div class="member-info">
+            <h3>Michael Brown</h3>
+            <span class="member-position">Fleet Manager</span>
+            <p>
+              Michael oversees our fleet, ensuring all vehicles are
+              well-maintained and ready for rental.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Our Mission Section -->
+  <section class="mission-section">
+    <div class="container">
+      <div class="mission-content">
+        <h2 class="section-title">Our Mission</h2>
+        <p>
+          Our mission is to provide high-quality car rental services at
+          competitive prices while ensuring customer satisfaction. We strive to
+          make the car rental process as simple and convenient as possible,
+          offering a wide selection of well-maintained vehicles to meet the
+          diverse needs of our customers.
         </p>
-        <p class="about-text">
-          Our fleet consists of well-maintained vehicles ranging from economy to
-          luxury, ensuring we have the perfect car for every need and budget.
-          Whether you're planning a family vacation, a business trip, or just
-          need a temporary vehicle, we've got you covered.
-        </p>
-        <div class="stats-grid">
-          <div class="stat-item">
-            <span class="stat-number">100+</span>
-            <span class="stat-label">Vehicles</span>
+        <div class="mission-values">
+          <div class="value-item">
+            <i class="fas fa-car"></i>
+            <h3>Quality Vehicles</h3>
+            <p>
+              We maintain a fleet of modern, well-serviced vehicles to ensure your
+              safety and comfort.
+            </p>
           </div>
-          <div class="stat-item">
-            <span class="stat-number">10k+</span>
-            <span class="stat-label">Happy Clients</span>
+          <div class="value-item">
+            <i class="fas fa-handshake"></i>
+            <h3>Customer First</h3>
+            <p>
+              Our customers are our top priority, and we strive to exceed their
+              expectations with every rental.
+            </p>
           </div>
-          <div class="stat-item">
-            <span class="stat-number">24/7</span>
-            <span class="stat-label">Support</span>
+          <div class="value-item">
+            <i class="fas fa-leaf"></i>
+            <h3>Eco-Friendly</h3>
+            <p>
+              We're committed to reducing our environmental impact by maintaining
+              eco-friendly practices.
+            </p>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- Our Team Section -->
-<section class="team-section">
-  <div class="container">
-    <h2 class="section-title">Our Team</h2>
-    <div class="team-grid">
-      <div class="team-member">
-        <div class="member-image">
-          <img
-            src="{% static 'rental/assets/team-1.jpg' %}"
-            alt="Team Member"
-          />
-        </div>
-        <div class="member-info">
-          <h3>John Doe</h3>
-          <span class="member-position">CEO & Founder</span>
-          <p>
-            With 15+ years in the car rental industry, John leads our team with
-            passion and vision.
-          </p>
-        </div>
-      </div>
-      <div class="team-member">
-        <div class="member-image">
-          <img
-            src="{% static 'rental/assets/team-2.jpg' %}"
-            alt="Team Member"
-          />
-        </div>
-        <div class="member-info">
-          <h3>Jane Smith</h3>
-          <span class="member-position">Operations Manager</span>
-          <p>
-            Jane ensures our day-to-day operations run smoothly and our
-            customers receive top-notch service.
-          </p>
-        </div>
-      </div>
-      <div class="team-member">
-        <div class="member-image">
-          <img
-            src="{% static 'rental/assets/team-3.jpg' %}"
-            alt="Team Member"
-          />
-        </div>
-        <div class="member-info">
-          <h3>Michael Brown</h3>
-          <span class="member-position">Fleet Manager</span>
-          <p>
-            Michael oversees our fleet, ensuring all vehicles are
-            well-maintained and ready for rental.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Our Mission Section -->
-<section class="mission-section">
-  <div class="container">
-    <div class="mission-content">
-      <h2 class="section-title">Our Mission</h2>
-      <p>
-        Our mission is to provide high-quality car rental services at
-        competitive prices while ensuring customer satisfaction. We strive to
-        make the car rental process as simple and convenient as possible,
-        offering a wide selection of well-maintained vehicles to meet the
-        diverse needs of our customers.
-      </p>
-      <div class="mission-values">
-        <div class="value-item">
-          <i class="fas fa-car"></i>
-          <h3>Quality Vehicles</h3>
-          <p>
-            We maintain a fleet of modern, well-serviced vehicles to ensure your
-            safety and comfort.
-          </p>
-        </div>
-        <div class="value-item">
-          <i class="fas fa-handshake"></i>
-          <h3>Customer First</h3>
-          <p>
-            Our customers are our top priority, and we strive to exceed their
-            expectations with every rental.
-          </p>
-        </div>
-        <div class="value-item">
-          <i class="fas fa-leaf"></i>
-          <h3>Eco-Friendly</h3>
-          <p>
-            We're committed to reducing our environmental impact by maintaining
-            eco-friendly practices.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 {% endblock %}

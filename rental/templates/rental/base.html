@@ -1,113 +1,169 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-        <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>{% block title %}Car Rental Service{% endblock %}</title>        <!-- Favicon -->    <link rel="shortcut icon" href="{% static 'rental/favicon.ico' %}" type="image/x-icon">        <!-- Common CSS Files -->
-    <link rel="stylesheet" href="{% static 'rental/css/style.css' %}">
-    {% block extra_css %}{% endblock %}
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
-<body>
-    <!-- Header -->
-    <header class="site-header">
-        <div class="header-left">
-            <div class="logo">Car Rental Service</div>
-        </div>
-        <div class="header-right">
-            <nav class="main-nav">
-                <ul>
-                    {% if user.is_authenticated %}
-                    <li><a href="{% url 'home' %}" {% if request.path == '/home/' %}class="active"{% endif %}>Home</a></li>
-                    <li><a href="{% url 'about' %}" {% if request.path == '/about/' %}class="active"{% endif %}>About</a></li>
-                    <li><a href="{% url 'car_list' %}" {% if request.path == '/cars/' %}class="active"{% endif %}>Cars</a></li>
-                    <li><a href="{% url 'contact' %}" {% if request.path == '/contact/' %}class="active"{% endif %}>Contact</a></li>
-                    
-                    {% if user.profile.user_type == 'admin' or user.is_superuser %}
-                        <li><a href="{% url 'admin:index' %}" class="admin-link">Admin Panel</a></li>
-                    {% endif %}
-                    <li><a href="{% url 'booking_list' %}" {% if request.path == '/bookings/' %}class="active"{% endif %}><i class="fas fa-calendar-check"></i> My Bookings</a></li>
-                    <li><a href="{% url 'profile' %}" {% if '/profile/' in request.path %}class="active"{% endif %}>My Account</a></li>
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
-                    {% else %}
-                    <li><a href="{% url 'welcome' %}" {% if request.path == '/' %}class="active"{% endif %}>Home</a></li>
-                    <li><a href="{% url 'login' %}" {% if request.path == '/login/' %}class="active"{% endif %}>Login</a></li>
-                    <li><a href="{% url 'register' %}" {% if request.path == '/register/' %}class="active"{% endif %}>Register</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-            <div class="menu-trigger">
-                <span></span>
-                <span></span>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+              content="Car Rental Service - Your trusted partner for quality car rentals. Find the perfect vehicle for your needs at competitive prices.">
+        <meta name="keywords"
+              content="car rental, vehicle rental, car hire, auto rental, car booking, car reservation">
+        <title>
+            {% block title %}Car Rental Service{% endblock %}
+        </title>
+        <!-- Favicon -->
+        <link rel="shortcut icon"
+              href="{% static 'rental/favicon.ico' %}"
+              type="image/x-icon">
+        <!-- Common CSS Files -->
+        <link rel="stylesheet" href="{% static 'rental/css/style.css' %}">
+        {% block extra_css %}{% endblock %}
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+              rel="stylesheet">
+        <!-- Font Awesome -->
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    </head>
+    <body>
+        <!-- Header -->
+        <header class="site-header">
+            <div class="header-left">
+                <div class="logo">Car Rental Service</div>
             </div>
-        </div>
-    </header>
-
-    <!-- Messages -->
-    {% if messages %}
-        <div class="messages-container">
-            {% for message in messages %}
-                <div class="message {{ message.tags }}">
-                    {{ message }}
-                    <span class="close-message">&times;</span>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    <!-- Main Content -->
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-
-    <!-- Footer Section -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-info">
-                    <h3>Car Rental</h3>
-                    <p>Your Trusted Partner for Quality Car Rentals</p>
-                </div>
-                <div class="footer-links">
-                    <h4>Quick Links</h4>
+            <div class="header-right">
+                <nav class="main-nav">
                     <ul>
                         {% if user.is_authenticated %}
-                        <li><a href="{% url 'home' %}">Home</a></li>
-                        <li><a href="{% url 'about' %}">About</a></li>
-                        <li><a href="{% url 'car_list' %}">Cars</a></li>
-                        <li><a href="{% url 'contact' %}">Contact</a></li>
-                        <li><a href="{% url 'booking_list' %}">My Bookings</a></li>
-                        <li><a href="{% url 'profile' %}">My Account</a></li>
+                            <li>
+                                <a href="{% url 'home' %}"
+                                   {% if request.path == '/home/' %}class="active"{% endif %}>Home</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'about' %}"
+                                   {% if request.path == '/about/' %}class="active"{% endif %}>About</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'car_list' %}"
+                                   {% if request.path == '/cars/' %}class="active"{% endif %}>Cars</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'contact' %}"
+                                   {% if request.path == '/contact/' %}class="active"{% endif %}>Contact</a>
+                            </li>
+                            {% if user.profile.user_type == 'admin' or user.is_superuser %}
+                                <li>
+                                    <a href="{% url 'admin:index' %}" class="admin-link">Admin Panel</a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="{% url 'booking_list' %}"
+                                   {% if request.path == '/bookings/' %}class="active"{% endif %}><i class="fas fa-calendar-check"></i> My Bookings</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'profile' %}"
+                                   {% if '/profile/' in request.path %}class="active"{% endif %}>My Account</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'logout' %}">Logout</a>
+                            </li>
                         {% else %}
-                        <li><a href="{% url 'welcome' %}">Home</a></li>
-                        <li><a href="{% url 'login' %}">Login</a></li>
-                        <li><a href="{% url 'register' %}">Register</a></li>
+                            <li>
+                                <a href="{% url 'welcome' %}"
+                                   {% if request.path == '/' %}class="active"{% endif %}>Home</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'login' %}"
+                                   {% if request.path == '/login/' %}class="active"{% endif %}>Login</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'register' %}"
+                                   {% if request.path == '/register/' %}class="active"{% endif %}>Register</a>
+                            </li>
                         {% endif %}
                     </ul>
-                </div>
-                <div class="footer-newsletter">
-                    <h4>Newsletter</h4>
-                    <form action="#" method="POST">
-                        {% csrf_token %}
-                        <div class="newsletter-input">
-                            <input type="email" name="email" placeholder="Enter your email" required>
-                            <button type="submit">Subscribe</button>
-                        </div>
-                    </form>
+                </nav>
+                <div class="menu-trigger">
+                    <div class="menu-icon"></div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; {% now "Y" %} Car Rental Service. All rights reserved.</p>
+        </header>
+        <!-- Messages -->
+        {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">
+                        {{ message }}
+                        <button class="close-message">×</button>
+                    </div>
+                {% endfor %}
             </div>
-        </div>
-    </footer>
-
-    <!-- Common JS -->
-    <script src="{% static 'rental/js/script.js' %}"></script>
-    {% block extra_js %}{% endblock %}
-</body>
-</html> 
+        {% endif %}
+        <!-- Main Content -->
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+        <!-- Footer Section -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <h3>Car Rental</h3>
+                        <p>Your Trusted Partner for Quality Car Rentals</p>
+                    </div>
+                    <div class="footer-links">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            {% if user.is_authenticated %}
+                                <li>
+                                    <a href="{% url 'home' %}">Home</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'about' %}">About</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'car_list' %}">Cars</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'contact' %}">Contact</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'booking_list' %}">My Bookings</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'profile' %}">My Account</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a href="{% url 'welcome' %}">Home</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'login' %}">Login</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'register' %}">Register</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="footer-newsletter">
+                        <h4>Newsletter</h4>
+                        <form action="#" method="post">
+                            {% csrf_token %}
+                            <div class="newsletter-input">
+                                <input type="email" name="email" placeholder="Enter your email" required>
+                                <button type="submit">Subscribe</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>© {% now "Y" %} Car Rental Service. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+        <!-- Common JS -->
+        <script src="{% static 'rental/js/script.js' %}"></script>
+        {% block extra_js %}{% endblock %}
+    </body>
+</html>

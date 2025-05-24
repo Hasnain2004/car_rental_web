@@ -1,67 +1,53 @@
-{% extends 'rental/base.html' %} {% load static %}
-
+{% extends 'rental/base.html' %}
+{% load static %}
 <!-- title -->
 {% block title %}Cancel Booking - Car Rental Service{% endblock %}
-
 <!-- css -->
-{% block extra_css %}<link
-  rel="stylesheet"
-  href="{% static 'rental/css/cancel-booking.css' %}"
-/>{% endblock %} {% block content %}
-<section class="cancel-booking-section">
-  <div class="container">
-    <div class="cancel-booking-container">
-      <div class="section-header">
-        <i class="fas fa-exclamation-triangle cancel-icon"></i>
-        <h1>Cancel Booking</h1>
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'rental/css/cancel-booking.css' %}" />
+{% endblock %}
+{% block content %}
+  <section class="cancel-booking-section">
+    <div class="container">
+      <div class="cancel-booking-container">
+        <div class="section-header">
+          <i class="fas fa-exclamation-triangle cancel-icon"></i>
+          <h1>Cancel Booking</h1>
+        </div>
+        <div class="booking-summary">
+          <div class="summary-item">
+            <span class="summary-label">Car:</span>
+            <span class="summary-value">{{ booking.car.year }} {{ booking.car.make }}
+              <!-- a -->
+            {{ booking.car.model }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Pickup Date:</span>
+            <span class="summary-value">{{ booking.start_date|date:"F j, Y, g:i a" }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Return Date:</span>
+            <span class="summary-value">{{ booking.end_date|date:"F j, Y, g:i a" }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Total Cost:</span>
+            <span class="summary-value">${{ booking.total_cost }}</span>
+          </div>
+        </div>
+        <div class="cancel-message">
+          <p>
+            Are you sure you want to cancel this booking? This action cannot be
+            undone.
+          </p>
+        </div>
+        <form method="post" class="cancel-form">
+          {% csrf_token %}
+          <div class="cancel-actions">
+            <a href="{% url 'booking_detail' booking.id %}" class="btn-back">Go Back</a>
+            <button type="submit" class="btn-cancel-confirm">Confirm Cancellation</button>
+          </div>
+        </form>
       </div>
-
-      <div class="booking-summary">
-        <div class="summary-item">
-          <span class="summary-label">Car:</span>
-          <span class="summary-value"
-            >{{ booking.car.year }} {{ booking.car.make }}
-            <!-- a -->
-            {{ booking.car.model }}</span
-          >
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Pickup Date:</span>
-          <span class="summary-value"
-            >{{ booking.start_date|date:"F j, Y, g:i a" }}</span
-          >
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Return Date:</span>
-          <span class="summary-value"
-            >{{ booking.end_date|date:"F j, Y, g:i a" }}</span
-          >
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Total Cost:</span>
-          <span class="summary-value">${{ booking.total_cost }}</span>
-        </div>
-      </div>
-
-      <div class="cancel-message">
-        <p>
-          Are you sure you want to cancel this booking? This action cannot be
-          undone.
-        </p>
-      </div>
-
-      <form method="post" class="cancel-form">
-        {% csrf_token %}
-        <div class="cancel-actions">
-          <a href="{% url 'booking_detail' booking.id %}" class="btn-back"
-            >Go Back</a
-          >
-          <button type="submit" class="btn-cancel-confirm">
-            Confirm Cancellation
-          </button>
-        </div>
-      </form>
     </div>
-  </div>
-</section>
+  </section>
 {% endblock %}
