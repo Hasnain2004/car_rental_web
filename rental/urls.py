@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from django.contrib.auth import views as auth_views
 
@@ -27,4 +27,5 @@ urlpatterns = [
     path('bookings/', views.booking_list, name='booking_list'),
     path('bookings/<int:booking_id>/', views.booking_detail, name='booking_detail'),
     path('bookings/<int:booking_id>/cancel/', views.cancel_booking, name='cancel_booking'),
+    path('social-auth/', include('social_django.urls', namespace='social')),
 ] 
