@@ -68,6 +68,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -148,14 +150,22 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Session settings
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
+SESSION_COOKIE_SECURE = not DEBUG  # Use secure cookies in production
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+
 # Login/Logout URLs
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/login/'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_URL = 'logout'
+LOGOUT_REDIRECT_URL = 'welcome'
 
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '432672906087-117a8jcctklnqn2mgpmuejk2gg51qknu.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+# Google OAuth2 settings
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('GOOGLE_OAUTH2_KEY', '432672906087-117a8jcctklnqn2mgpmuejk2gg51qknu.apps.googleusercontent.com')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('GOOGLE_OAUTH2_SECRET', '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')
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
@@ -167,24 +177,40 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
     'access_type': 'offline',
     'prompt': 'consent'
 }
-SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://localhost:8000/social-auth/complete/google-oauth2/'
-SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
-    'access_type': 'offline',
-    'prompt': 'consent'
-}
-LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'login'
-LOGOUT_REDIRECT_URL = 'login'
 
+# Social Auth Pipeline
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',
     'social_core.pipeline.social_auth.auth_allowed',
     'social_core.pipeline.social_auth.social_user',
     'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',
     'social_core.pipeline.user.create_user',
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
+    'rental.pipeline.create_user_profile',  # Custom pipeline to create user profile
 )
+
+# Social Auth Settings
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'home'
+SOCIAL_AUTH_LOGIN_ERROR_URL = 'login'
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = 'edit_profile'
+SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = 'welcome'
+
+# Store social auth tokens
+SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = [
+    ('refresh_token', 'refresh_token'),
+    ('expires_in', 'expires_in'),
+    ('token_type', 'token_type'),
+    ('id_token', 'id_token'),
+]
+
+# Security settings
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
