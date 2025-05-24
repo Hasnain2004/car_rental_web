@@ -165,7 +165,10 @@ def contact(request):
         'form': form,
     }
     return render(request, 'rental/contact.html', context)
-
+def login_view(request):
+    if request.user.is_authenticated:
+        return render(request, 'login.html')
+    return render(request, 'login.html')
 # Authentication views
 def login_view(request):
     # Redirect if user is already logged in
