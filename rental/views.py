@@ -165,10 +165,7 @@ def contact(request):
         'form': form,
     }
     return render(request, 'rental/contact.html', context)
-def login_view(request):
-    if request.user.is_authenticated:
-        return render(request, 'login.html')
-    return render(request, 'login.html')
+
 # Authentication views
 def login_view(request):
     # Redirect if user is already logged in
@@ -182,6 +179,8 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        remember = request.POST.get('remember')
+        
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
@@ -191,6 +190,11 @@ def login_view(request):
                 return redirect('login')
             
             login(request, user)
+            
+            # Set session expiry based on remember me
+            if not remember:
+                request.session.set_expiry(0)  # Session expires when browser closes
+            
             next_url = request.GET.get('next', 'home')
             return redirect(next_url)
         else:

@@ -32,14 +32,20 @@
         </div>
         <a href="#" class="forgot-password">Forgot Password?</a>
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" class="btn-primary">Login</button>
+      <div class="divider">
+        <span>or continue with</span>
+      </div>
       <div class="social-container">
-        <button class="google-btn">
-          <a href="{% url 'social:begin' 'google-oauth2' %}">
-            <img src="https://www.google.com/favicon.ico" alt="Google">
-            Sign in with Google
-          </a>
-        </button>
+        <a href="{% url 'social:begin' 'google-oauth2' %}" class="google-btn">
+          <div class="google-btn-content">
+            <img src="{% static 'rental/assets/google-icon.png' %}"
+                 alt="Google"
+                 width="24"
+                 height="24" />
+            <span>Sign in with Google</span>
+          </div>
+        </a>
       </div>
       <div class="register-link">
         <p>
